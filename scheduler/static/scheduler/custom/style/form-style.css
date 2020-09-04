@@ -1,0 +1,134 @@
+body {
+    font-family: "Source Sans Pro",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
+}
+
+.login-page {
+    height: 100vh;                  /* set height to 100% of the viewport height */
+    display: flex;                  /* flexible & responsive layout structure */
+    flex-direction: column;         /* stack items vertically */
+    align-items: center;            /* aligns items horizontally to the center for flex-column */
+    justify-content: center;        /* aligns items vertically to the center for flex-column */
+    background-color: #e9ecef;
+}
+
+.login-box {
+    width: 360px;
+}
+
+@media (max-width: 768px){
+.login-box, .register-box {
+    width: 90%;
+    margin-top: 20px;
+}
+}
+
+.login-logo {
+    text-align: center;
+    font-size: 2.1rem;
+    font-weight: 300;
+    color: #495057;
+    margin-bottom: .9rem;
+}
+
+.login-page .card {
+    border: 0 solid rgba(0,0,0,.125);
+    border-radius: 0;
+    box-shadow: 0 0 1px rgba(0,0,0,.125), 0 1px 3px rgba(0,0,0,.2);
+    margin-bottom: 1rem;
+}
+
+.login-card-body {
+    color: #666;
+}
+
+.login-box-msg {
+    margin: 0;
+    padding: 0 20px 20px;
+    text-align: center;
+}
+
+.login-page .input-group>.form-control {
+    border-radius: .25rem;
+}
+
+
+/* ========== Icons on Form Fields ========== */
+.login-page .input-group-append {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    height: 38px;
+    z-index: 1000;          /* High z-index, so that it doesn't hide during focus on the field */
+}
+
+.login-page .input-group-text {
+    border: none;
+}
+
+.login-card-body .input-group .input-group-text {
+    background-color: transparent;
+    color: #777;
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+
+
+/* =========== Icon color for required fields =========== */
+.login-card-body .input-group .input-group-text.req {
+    color: #495057;
+}
+
+
+/* ========== Custom Checkbox ========== */
+.login-page .custom-checkbox {
+    margin-top: 6px;
+    margin-bottom: 6px;
+}
+
+.login-page .custom-control-input:checked~.custom-control-label::before {
+    color: #fff;
+    border-color: #26a69a;
+    background-color: #26a69a;
+}
+
+.login-page .custom-checkbox .custom-control-label::before {
+    border-radius: 0;
+    outline: none;
+    box-shadow: none;
+}
+
+.login-page .custom-control-label {
+    font-weight: 900;
+}
+
+.login-page button[type=submit] {
+    color: #fff;
+    background-color: #26a69a;
+    /* border-radius: 0; */
+}
+
+.login-page  button[type=submit]:hover {
+    color: #fff;
+    background-color: #2bbbad;
+}
+
+.login-page .social-auth-links {
+    margin: 10px 0;
+}
+
+.login-page a{
+    text-decoration: none;
+}
+
+
+/* ========== placeholder ========== */
+.form-control::placeholder {
+    color:#939ba2;
+    opacity:1
+}
+
+
+/* ========== Remove blue outline form elements during focus ========== */
+.form-control, .btn {
+    outline: none !important;
+    box-shadow: none !important;
+}

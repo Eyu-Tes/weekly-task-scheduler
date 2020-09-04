@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block custom_style %}
+    <link rel="stylesheet" href="{% static 'scheduler/custom/style/menu_slider.css' %}">
+{% endblock custom_style %}
+
+
+{% block content %}
+
+<div class="container mt-5">
+    <h3 class="text-center">Weekly Schedule</h3>
+    <div class="d-flex justify-content-between my-4"">
+        <h4>{{user}}</h4>
+        <a href="{% url 'logout' %}">Logout</a>
+    </div>
+    <ul class="nav nav-tabs" id="slider">
+        <li class="nav-item"><a class="nav-link active" id="monday-tab" href="{% url 'user_home' user.id 'monday' %}">Monday</a></li>
+        <li class="nav-item"><a class="nav-link" id="tuesday-tab" href="{% url 'user_home' user.id 'tuesday' %}">Tuesday</a></li>
+        <li class="nav-item"><a class="nav-link" id="wednesday-tab" href="{% url 'user_home' user.id 'wednesday' %}">Wednesday</a></li>
+        <li class="nav-item"><a class="nav-link" id="thursday-tab" href="{% url 'user_home' user.id 'thursday' %}">Thursday</a></li>
+        <li class="nav-item"><a class="nav-link" id="friday-tab" href="{% url 'user_home' user.id 'friday' %}">Friday</a></li>
+        <li class="nav-item"><a class="nav-link" id="saturday-tab" href="{% url 'user_home' user.id 'saturday' %}">Saturday</a></li>
+        <li class="nav-item"><a class="nav-link" id="sunday-tab" href="{% url 'user_home' user.id 'sunday' %}">Sunday</a></li>
+    </ul>
+    <!-- <div>
+        <a id="slideLeft" href="#" style="text-decoration: none;">&laquo;</a>
+        <a id="slideRight" class="float-right" href="#" style="text-decoration: none;">&raquo;</a>
+    </div> -->
+    <div class="slider mt-3">
+        <a id="slideLeft" href="#">&laquo;</a>
+        <a id="slideRight" class="float-right" href="#">&raquo;</a>
+    </div>
+
+    <div class="tab-content mt-4">
+        <div class="tab-pane fade show active">
+            <div class="container">
+                <form method="post" novalidate id="task-form">
+                    {% csrf_token %}
+                    {{ formset.management_form }}
+                    <div class="form-container">
+                        {% for form in formset %}
+                            {{form.id}}
+                            {{form.user}}
+                            {{form.day}}
+                            <div class="row form-row mb-3">
+                                <div class="col-12 col-sm-12 col-md-5 col-lg-6">
+                                    {{form.task_name}}
+                                </div>
+                                <div class="col-5 col-sm-5 col-md-3 col-lg-2">
+                                    {{form.start_time}}
+                                </div> to
+                                <div class="col-5 col-sm-5 col-md-3 col-lg-2">
+                                    {{form.end_time}}
+                                </div>
+                                <button type="button" class='btn btn-sm remove-form-row' name="task_set-{{forloop.counter0}}-DELETE" id="id_task_set-{{forloop.counter0}}-DELETE"><i class="fas fa-trash"></i></button>
+                                <input hidden type="checkbox" name="task_set-{{forloop.counter0}}-DELETE" id="id_task_set-{{forloop.counter0}}-DELETE">
+                                {% comment %} <button type='button' class="btn btn-sm btn-outline-danger remove-form-row" id="remove">X</button> {% endcomment %}
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <div class="row form-row mt-4">
+                    <div class="col">
+                        <button type='button' class="btn btn-outline-success rounded-0 add-form-row">
+                            <span class="fas fa-plus fa-sm"></span>
+                        </button>
+                    </div>
+                    </div>
+                    <div class="row form-row mt-4">
+                        <div class="col">
+                            <button type="submit" class="btn btn-outline-secondary rounded-0">Save</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
+
+{% block custom_script %}
+    <script src="{% static 'scheduler/custom/script/menu_slider.js' %}"></script>
+{% endblock custom_script %}

@@ -1,0 +1,55 @@
+body {
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+/* ========== Remove blue outline form elements during focus ========== */
+.form-control, .btn {
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+#task-form input{
+    border: 0;
+    border-bottom: 1px solid #ced4da;
+    border-radius: 0;
+}
+
+#task-form input:focus {
+    background-color: transparent;
+    border-bottom: 2px solid #26a69a;
+    transition: .3s;
+}
+
+/* @media(max-width:576px) {
+    #task-form button#remove {
+        margin-right: 15px !important;
+        margin-left: 15px !important;
+    }
+} */
+
+#task-form button.remove-form-row {
+    /* border: 0;
+    border-radius: 0; */
+    font-size: larger;
+    /* font-weight: bolder; */
+}
+
+#task-form button.remove-form-row:hover {
+    color: #ff3547;
+    background-color: transparent !important;
+}
+
+.btn-outline-success {
+    border: 2px solid #26a69a;
+    color: #26a69a;
+}
+
+.btn-outline-success:hover {
+    background-color: #26a69a;
+    border-color: #26a69a;
+}
+
+.btn-outline-success:active {
+    background-color: #26a69a !important;
+    border-color: #26a69a !important;
+}

@@ -1,0 +1,34 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weekly Task Scheduler</title>
+    <!-- Font Awsome, Bootstrap, Custom CSS -->
+    <link rel="stylesheet" href="{% static 'scheduler/bootstrap-4.4.1-dist/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'scheduler/font awsome/css/all.min.css' %}">
+    <link rel="stylesheet" href="{% static 'scheduler/custom/style/style.css' %}">
+
+    {% block custom_style %}
+    {% endblock custom_style %}
+</head>
+<body>
+    {% block alert_msg %}
+        {% include 'alert_msg.html' %}
+    {% endblock alert_msg %}
+    
+    {% block content %}
+    {% endblock content %}
+
+      <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="{% static 'scheduler/jquery-3.4.1.slim.min.js' %}"></script>
+    <script src="{% static 'scheduler/popper.min.js' %}"></script>
+    <script src="{% static 'scheduler/bootstrap-4.4.1-dist/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'scheduler/custom/script/script.js' %}"></script>
+
+    {% block custom_script %}
+    {% endblock custom_script %}
+</body>
+</html>
