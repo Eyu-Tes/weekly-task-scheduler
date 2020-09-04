@@ -82,4 +82,12 @@
 
 {% block custom_script %}
     <script src="{% static 'scheduler/custom/script/menu_slider.js' %}"></script>
+    <script>
+        $(document).ready(function() {
+            // remove the active class from previously active menu item 
+            $(".nav li a").removeClass("active");
+            // set the active class to the current menu item
+            $('a[href="' + this.location.pathname + '"]').addClass('active');
+        });
+    </script>
 {% endblock custom_script %}
