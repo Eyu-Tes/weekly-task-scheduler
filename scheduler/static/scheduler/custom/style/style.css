@@ -1,5 +1,10 @@
+@font-face {
+    font-family: "Sniglet";
+    src: url("../../font/Sniglet-Regular.ttf");
+}
+
 body {
-    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-family: 'Sniglet', 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
 
 /* ========== Remove blue outline form elements during focus ========== */
@@ -8,38 +13,88 @@ body {
     box-shadow: none !important;
 }
 
-#task-form input{
+@media (max-width: 576px) {
+    .container {
+        padding: 5px !important;
+    }
+}
+
+.container {
+    box-shadow: 0 6px 6px -6px #9c9c9c;
+}
+
+#title {
+    background-color: #ffe01b;
+    font-weight: bolder;
+}
+
+.modal form input{
     border: 0;
     border-bottom: 1px solid #ced4da;
     border-radius: 0;
+    background-color: transparent;
 }
 
-#task-form input:focus {
+.modal form input:focus {
     background-color: transparent;
     border-bottom: 2px solid #26a69a;
-    transition: .3s;
+    transition: .2s;
 }
 
-/* @media(max-width:576px) {
-    #task-form button#remove {
-        margin-right: 15px !important;
-        margin-left: 15px !important;
+.nav-tabs .nav-link {
+    color: #212529;
+}
+
+.table {
+    color: #212529;
+}
+
+.table th {
+    border-top: 0;
+}
+
+.table thead tr {
+    background-color: #007c89;
+    color: #fff;
+}
+
+tr:hover {
+    background-color: #f7f7f7;
+}
+
+.th-lg {
+    width: 12.5rem;
+}
+
+@media(min-width: 768px) {
+    .th-lg {
+        width: 25rem;
     }
-} */
-
-#task-form button.remove-form-row {
-    /* border: 0;
-    border-radius: 0; */
-    font-size: larger;
-    /* font-weight: bolder; */
 }
 
-#task-form button.remove-form-row:hover {
+@media(min-width: 992px) {
+    .th-lg {
+        width: 25rem;
+    }
+}
+
+.th-sm {
+    width: 0.5rem;
+}
+
+.table td a {
+    color: #212529;
+}
+
+.table td a#delete:hover {
     color: #ff3547;
-    background-color: transparent !important;
 }
 
-.btn-outline-success {
+.table td a#edit:hover {
+    color: #ffbb33;
+}
+
+.btn-outline-success, .btn-outline-primary {
     border: 2px solid #26a69a;
     color: #26a69a;
 }
@@ -52,4 +107,26 @@ body {
 .btn-outline-success:active {
     background-color: #26a69a !important;
     border-color: #26a69a !important;
+}
+
+.modal-dialog {
+    height: 55vh;
+}
+
+.modal-content {
+    height: 99%;
+    border: 0;
+    border-radius: 0;
+}
+
+.modal-header {
+    background-color: #ffe01b;
+}
+
+.modal-body {
+    padding: 2rem 1rem;
+}
+
+.modal-footer {
+    background-color: #f2f2f2;
 }

@@ -2,6 +2,8 @@
 
 {% load static %}
 
+{% load custom_tags %}
+
 {% block custom_style %}
     <link rel="stylesheet" href="{% static 'scheduler/custom/style/menu_slider.css' %}">
 {% endblock custom_style %}
@@ -9,13 +11,10 @@
 
 {% block content %}
 
-<div class="container mt-5">
-    <h3 class="text-center">Weekly Schedule</h3>
-    <div class="d-flex justify-content-between my-4"">
-        <h4>{{user}}</h4>
-        <a href="{% url 'logout' %}">Logout</a>
-    </div>
-    <ul class="nav nav-tabs" id="slider">
+<div class="container my-5 p-1 bg-white">
+    <h2 class="text-center py-3" id="title">Weekly Schedule</h2>
+    
+    <ul class="nav nav-tabs invisible" id="slider">
         <li class="nav-item"><a class="nav-link active" id="monday-tab" href="{% url 'user_home' user.id 'monday' %}">Monday</a></li>
         <li class="nav-item"><a class="nav-link" id="tuesday-tab" href="{% url 'user_home' user.id 'tuesday' %}">Tuesday</a></li>
         <li class="nav-item"><a class="nav-link" id="wednesday-tab" href="{% url 'user_home' user.id 'wednesday' %}">Wednesday</a></li>
@@ -24,70 +23,264 @@
         <li class="nav-item"><a class="nav-link" id="saturday-tab" href="{% url 'user_home' user.id 'saturday' %}">Saturday</a></li>
         <li class="nav-item"><a class="nav-link" id="sunday-tab" href="{% url 'user_home' user.id 'sunday' %}">Sunday</a></li>
     </ul>
-    <!-- <div>
-        <a id="slideLeft" href="#" style="text-decoration: none;">&laquo;</a>
-        <a id="slideRight" class="float-right" href="#" style="text-decoration: none;">&raquo;</a>
-    </div> -->
     <div class="slider mt-3">
         <a id="slideLeft" href="#">&laquo;</a>
         <a id="slideRight" class="float-right" href="#">&raquo;</a>
     </div>
 
+    <div class="d-flex justify-content-between my-4"">
+        <h4>{{user}}</h4>
+        <a href="{% url 'logout' %}">Logout</a>
+    </div>
+
     <div class="tab-content mt-4">
         <div class="tab-pane fade show active">
-            <div class="container">
-                <form method="post" novalidate id="task-form">
-                    {% csrf_token %}
-                    {{ formset.management_form }}
-                    <div class="form-container">
-                        {% for form in formset %}
-                            {{form.id}}
-                            {{form.user}}
-                            {{form.day}}
-                            <div class="row form-row mb-3">
-                                <div class="col-12 col-sm-12 col-md-5 col-lg-6">
-                                    {{form.task_name}}
-                                </div>
-                                <div class="col-5 col-sm-5 col-md-3 col-lg-2">
-                                    {{form.start_time}}
-                                </div> to
-                                <div class="col-5 col-sm-5 col-md-3 col-lg-2">
-                                    {{form.end_time}}
-                                </div>
-                                <button type="button" class='btn btn-sm remove-form-row' name="task_set-{{forloop.counter0}}-DELETE" id="id_task_set-{{forloop.counter0}}-DELETE"><i class="fas fa-trash"></i></button>
-                                <input hidden type="checkbox" name="task_set-{{forloop.counter0}}-DELETE" id="id_task_set-{{forloop.counter0}}-DELETE">
-                                {% comment %} <button type='button' class="btn btn-sm btn-outline-danger remove-form-row" id="remove">X</button> {% endcomment %}
-                            </div>
-                        {% endfor %}
-                    </div>
-                    <div class="row form-row mt-4">
-                    <div class="col">
-                        <button type='button' class="btn btn-outline-success rounded-0 add-form-row">
-                            <span class="fas fa-plus fa-sm"></span>
-                        </button>
-                    </div>
-                    </div>
-                    <div class="row form-row mt-4">
-                        <div class="col">
-                            <button type="submit" class="btn btn-outline-secondary rounded-0">Save</button>
-                        </div>
-                    </div>
-                </form>
+            <table id="taskTable" class="table">
+                <thead>
+                    <tr>
+                        <th class="th-lg">Task</th>
+                        <th>Start Time</th>
+                        <th>End Time</th>
+                        <th class="th-sm"></th>
+                        <th class="th-sm"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for task in tasks %}
+                    <tr id="task-{{task.id}}">
+                        <td id="task_name" class="taskData">{{task.task_name}}</td>
+                        <td id="start_time" class="taskData">{{task.start_time}}</td>
+                        <td id="end_time" class="taskData">{{task.end_time}}</td>
+                        <td>
+                            <a href="#" id="edit" onClick="editTask({{task.id}})" data-toggle="modal" data-target="#myModal">
+                                <i class="fas fa-pencil-alt"></i>
+                                <span class="tooltiptext">Edit Task</span>
+                            </a>
+                        </td>
+                        <td>
+                            <a href="#" id="delete" onClick="deleteTask({{task.id}})">
+                                <i class="fas fa-trash-alt"></i>
+                                <span class="tooltiptext">Delete Task</span>
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <div class="row form-row mt-4">
+                <div class="col">
+                    <button type='button' class="btn btn-outline-success rounded-0 add-form-row" onClick="addTask()" data-toggle="modal" data-target="#myModal">
+                        <span class="fas fa-plus fa-sm"></span>
+                    </button>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
+ <!-- Modal -->
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title"></h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="alert"></div>
+        <form action="" novalidate>
+        <div class="modal-body">
+            <input type="hidden" name="task_id"  id="id_task_id">
+            {{task_form.day}}
+            {{task_form.task_name}}
+            <div class="d-flex justify-content-between mt-3 mb-5">
+                {{task_form.start_time}}
+                <span class="mx-2"> to </span> 
+                {{task_form.end_time}}
+            </div>
+            <small id="form-msg" class="text-muted"></small>
+        </div>
+        <div class="modal-footer">
+            <button type="submit" class="btn btn-outline-success rounded-0" >Save changes</button>
+            <button type="button" class="btn btn-outline-secondary rounded-0" data-dismiss="modal">Close</button>
+        </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
 {% endblock content %}
 
 {% block custom_script %}
     <script src="{% static 'scheduler/custom/script/menu_slider.js' %}"></script>
+    <script src="{% static 'scheduler/custom/script/active_menu.js' %}"></script>
+
     <script>
-        $(document).ready(function() {
-            // remove the active class from previously active menu item 
-            $(".nav li a").removeClass("active");
-            // set the active class to the current menu item
-            $('a[href="' + this.location.pathname + '"]').addClass('active');
+        // Create Django Ajax Call
+        $("form").submit(function() {
+            var taskId = $('input[name="task_id"]').val().trim();
+            var dayInput = $('input[name="day"]').val().trim();
+            var taskNameInput = $('input[name="task_name"]').val().trim();
+            var startTimeInput = $('input[name="start_time"]').val().trim();
+            var endTimeInput = $('input[name="end_time"]').val().trim();
+
+            let modalAlert = document.querySelector('.modal .alert');
+            if (taskNameInput && startTimeInput && endTimeInput) {
+                if(this.id == 'create-task-form'){
+                        path = '{% url "create_task" %}';
+                        successAction = appendToTaskTable;
+                        successMsg = 'New task added.';
+                }
+                else if(this.id == 'edit-task-form'){
+                        path = '{% url "update_task" %}';
+                        successAction = updateToTaskTable;
+                        successMsg = 'Task edited.';
+                }
+
+                // Create Ajax Call
+                $.ajax({
+                    url: path,
+                    data: {
+                        'task_id': taskId,
+                        'task_name': taskNameInput,
+                        'start_time': startTimeInput,
+                        'end_time': endTimeInput, 
+                        'day': dayInput,
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+                        if (data.task) {
+                            successAction(data.task);
+                            modalAlert.className = "alert alert-success";
+                            modalAlert.innerHTML = successMsg;
+                            modalAlert.style.display = 'block';
+                        }
+                    }
+                });
+                if(this.id == 'create-task-form') $("form").trigger("reset");  
+            }           
+            return false;
         });
+
+        function appendToTaskTable(task) {
+            startTime = to12HrFormat(task.start_time);
+            endTime = to12HrFormat(task.end_time);
+            $("#taskTable > tbody:last-child").append(`
+                <tr id="task-${task.id}">
+                    <td id="task_name">${task.task_name}</td>
+                    <td id="start_time">${startTime}</td>
+                    <td id="end_time">${endTime}</td>
+                    <td>
+                        <a href="#" id="edit" onClick="editTask(${task.id})" data-toggle="modal" data-target="#myModal">
+                            <i class="fas fa-pencil-alt"></i>
+                            <span class="tooltiptext">Edit Task</span>
+                        </a>
+                    </td>
+                    <td>
+                        <a href="#" id="delete" onClick="deleteTask(${task.id})">
+                            <i class="fas fa-trash-alt"></i>
+                            <span class="tooltiptext">Delete Task</span>
+                        </a>
+                    </td>    
+                </tr>
+            `);
+        }
+
+        function updateToTaskTable(task){
+            startTime = to12HrFormat(task.start_time);
+            endTime = to12HrFormat(task.end_time);
+            let targetTableRow = document.querySelector("#taskTable #task-" + task.id);
+            targetTableRow.querySelector('#task_name').innerHTML = task.task_name;
+            targetTableRow.querySelector('#start_time').innerHTML = startTime;
+            targetTableRow.querySelector('#end_time').innerHTML = endTime;
+        }
+
+        function to12HrFormat(time24) {
+            [hrs, min] = time24.split(":");
+            if (hrs < 12) {
+                hrs = Number(hrs);
+                if (hrs == 0){
+                    hrs = String(12);
+                }
+                format = "a.m.";
+            }
+            else if (hrs >= 12) {
+                hrs = Number(hrs) - 12;
+                if (hrs == 0){
+                    hrs = String(12);
+                }
+                format="p.m.";
+            }
+            newTime = hrs + ":" + min + " " + format;
+            return newTime;
+        }
+
+        function to24HrFormat(time12) {
+            [time, format] = time12.split(' ');
+            if (time.includes(':')){
+                [hrs, min] = time.split(':');
+            }
+            else {
+                [hrs, min] = [time, 0];
+            }
+            
+            let now = new Date();
+            if(format == "p.m." && hrs<12) hrs = Number(hrs) + 12;
+            if(format == "a.m." && hrs==12) hrs = "0";
+            time = [hrs, min];
+            let date = new Date(now.getFullYear(), now.getMonth(), now.getDate(), ...time);
+            newHr = date.getHours();
+            newMin = date.getMinutes();
+            if (String(newHr).length==1) newHr = '0' + newHr;
+            if (String(newMin).length==1) newMin = '0' + newMin;
+            newTime = newHr + ':' + newMin;
+            return newTime;
+		}
+
+        function addTask() {
+            $("form").trigger("reset");
+            let formElm = document.querySelector('form');
+            formElm.id = 'create-task-form';
+            document.querySelector(".modal-title").innerHTML = 'Create Task';
+            document.querySelector("#form-msg").innerHTML = 'All fields are required.'; 
+            document.querySelector('.modal .alert').style.display = 'none';
+        }
+
+        function editTask(taskId) {
+            let formElm = document.querySelector('form');
+            formElm.id = 'edit-task-form';
+            document.querySelector('.modal-title').innerHTML = 'Edit Task';
+            document.querySelector("#form-msg").innerHTML = 'Save and close when you are done.'; 
+            document.querySelector('.modal .alert').style.display = 'none';
+
+            if (taskId) {
+                tr_id = "#task-" + taskId;
+                taskName = $(tr_id).find("#task_name").text();
+                startTime = to24HrFormat($(tr_id).find("#start_time").text());
+                endTime = to24HrFormat($(tr_id).find("#end_time").text());
+                $('#id_task_id').val(taskId);
+                $('#id_task_name').val(taskName);
+                $('#id_start_time').val(startTime);
+                $('#id_end_time').val(endTime);
+            }
+        }
+
+        // Delete Django Ajax Call
+        function deleteTask(taskId) {
+            $.ajax({
+                url: '{% url "delete_task" %}',
+                data: {
+                    'task_id': taskId,
+                },
+                dataType: 'json',
+                success: function (data) {
+                    if (data.deleted) {
+                        $("#taskTable #task-" + taskId).remove();
+                    }
+                }
+            });
+        }
     </script>
+
 {% endblock custom_script %}

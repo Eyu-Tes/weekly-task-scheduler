@@ -5,12 +5,13 @@
 {% block content %}
     <div class="login-page">
         <div class="login-box">
-            <div class="login-logo">
-                <b>Login</b> User
-            </div>
+            <h2 class="text-center py-3" id="title">Weekly Schedule</h2>
+            {% comment %} <div class="login-logo">
+                <b>Login</b> to Schedule Your Weekly Tasks
+            </div> {% endcomment %}
             <div class='card'>
                 <div class="card-body login-card-body">
-                    <p class="login-box-msg">Sign in to start your session</p>
+                    <p class="login-box-msg">Log in to start your session</p>
                     <form action="#" method="post" novalidate>
                         {% csrf_token %}
                         <div class="input-group mb-3">
@@ -51,7 +52,7 @@
                           </div>
                         </div>
                         <p class="mt-3 mb-1">
-                          <a href="#">I forgot my password</a>
+                          {% comment %} <a href="#">I forgot my password</a> {% endcomment %}
                         </p>
                         <p class="mb-0">
                           <a href="{% url 'register' %}">Register a new membership</a>
@@ -59,6 +60,7 @@
                       </form>
                 </div>
             </div>
+            {% include 'alert_msg.html' %}
         </div>
     </div>
 {% endblock content %}

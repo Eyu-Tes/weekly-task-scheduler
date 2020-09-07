@@ -34,33 +34,17 @@ class UserLoginForm(forms.Form):
         'class': 'form-control', 'placeholder': 'Password'}))
 
 
-# class TaskForm(forms.ModelForm):
-#     class Meta:
-#         model = Task
-#         fields = ['task_name', 'start_time', 'end_time', 'day']
-#
-#         widgets = {
-#             'task_name': forms.TextInput(attrs={'class': 'form-control form-control-sm',
-#                                                 'placeholder': 'task name'}),
-#             'start_time': forms.TimeInput(attrs={'class': 'form-control form-control-sm',
-#                                                  'type': 'time', 'placeholder': 'start'}),
-#             'end_time': forms.TimeInput(attrs={'class': 'form-control form-control-sm',
-#                                                'type': 'time'}),
-#             'day': forms.HiddenInput(),
-#         }
+class TaskForm(forms.ModelForm):
+    class Meta:
+        model = Task
+        fields = ['task_name', 'start_time', 'end_time', 'day']
 
-
-TaskFormSet = forms.inlineformset_factory(
-    User,
-    Task,
-    fields=['task_name', 'start_time', 'end_time'],
-    extra=1,
-    widgets={
-        'task_name': forms.TextInput(attrs={'class': 'form-control form-control-sm',
-                                            'placeholder': 'task name'}),
-        'start_time': forms.TimeInput(attrs={'class': 'form-control form-control-sm',
-                                             'type': 'time', 'placeholder': 'start'}),
-        'end_time': forms.TimeInput(attrs={'class': 'form-control form-control-sm',
-                                           'type': 'time'}),
-    }
-)
+        widgets = {
+            'task_name': forms.TextInput(attrs={'class': 'form-control form-control-sm',
+                                                'placeholder': 'task name'}),
+            'start_time': forms.TimeInput(attrs={'class': 'form-control form-control-sm',
+                                                 'type': 'time', 'placeholder': 'start'}),
+            'end_time': forms.TimeInput(attrs={'class': 'form-control form-control-sm',
+                                               'type': 'time'}),
+            'day': forms.HiddenInput(),
+        }
