@@ -117,7 +117,7 @@
     <script src="{% static 'scheduler/custom/script/active_menu.js' %}"></script>
 
     <script>
-        // Create Django Ajax Call
+        // Create / Update Django Ajax Call
         $("form").submit(function() {
             var taskId = $('input[name="task_id"]').val().trim();
             var dayInput = $('input[name="day"]').val().trim();
@@ -138,7 +138,7 @@
                         successMsg = 'Task edited.';
                 }
 
-                // Create Ajax Call
+                // Create / Update Ajax Call
                 $.ajax({
                     url: path,
                     data: {
@@ -159,7 +159,12 @@
                     }
                 });
                 if(this.id == 'create-task-form') $("form").trigger("reset");  
-            }           
+            }        
+            else {
+                modalAlert.className = "alert alert-danger";
+                modalAlert.innerHTML = "Please fill all fields.";
+                modalAlert.style.display = 'block';
+            }   
             return false;
         });
 
