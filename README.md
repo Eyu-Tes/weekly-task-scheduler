@@ -10,5 +10,5 @@ Ajax is a technique for loading data (from the server) into part of a page witho
 
 <br>
 <p align="center">
-  <img width="500" height="300" src="weekly-task-scheduler.PNG"><br>
+  <img src="weekly-task-scheduler.PNG"><br>
 </p>
