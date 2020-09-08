@@ -20,7 +20,3 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('scheduler.urls')),
 ]
-
-# urlpatterns += [
-#     url(r'^static/(?P<path>.*)$', serve, {'document_root': settings.STATIC_ROOT}),
-# ]
